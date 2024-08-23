@@ -6,6 +6,7 @@ import time
 import schedule
 import subprocess
 import os
+from PIL import ImageGrab
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from pathlib import Path
@@ -17,6 +18,8 @@ storeFilepath =  screenshotsDir / "store.png"
 optionsFilepath = screenshotsDir / "options.png"
 fullscreenOffFilepath = screenshotsDir / "fullscreenoff.png"
 fullscreenOnFilepath = screenshotsDir / "fullscreenon.png"
+screen = ImageGrab.grab()
+screen_width, screen_height = screen.size
 
 def launchGame():
     # Get game filepath
@@ -99,11 +102,12 @@ def findUpgrades():
 
 def findClickerUpgrades():
     findImage(storeFilepath)
-    pyautogui.moveRel(-120,50)
+    pyautogui.moveRel(screen_width*-0.05,screen_height*0.03)
     pyautogui.tripleClick()
     findImage(bigCookieFilepath)
 
 launchGame()
+findClickerUpgrades()
 
 schedule.every(1).seconds.do(findUpgrades)
 schedule.every(5).seconds.do(saveGame)
